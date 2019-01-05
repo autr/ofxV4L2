@@ -119,9 +119,9 @@ class ofxV4L2
 
 		// setDesiredFramerate should be called before initGrabber
 		bool setDesiredFramerate(int fr);
-        void initGrabber(const char * devname, int iomethod, int cw, int ch);
+        void initGrabber(char * devname, int iomethod, int cw, int ch);
         // three below are called inside initGrabber()
-        void open_device(const char * devname);
+        void open_device(char * devname);
         void init_device(void);
 		void start_capturing(void);
 
@@ -133,7 +133,7 @@ class ofxV4L2
 		// methods called inside other methods
         void errno_exit (const char * s);
         int xioctl(int fd, int request, void * arg);
-        void process_image(const void * p, int length);
+        void process_image(void * p, int length);
         void init_userp (unsigned int buffer_size);
         void init_mmap (void);
         void init_read(unsigned int buffer_size);
