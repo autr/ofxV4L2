@@ -125,7 +125,7 @@ void ofxV4L2::process_image(void * p, int length)
 	unsigned char * y = (unsigned char*)p;
 	for (row=0; row<camHeight; row++){
 		for (col=0; col<camWidth; col++){
-            float y = *(y + 2*(col + (row*camWidth*3)));
+            float y = *(y + 2*(col + (row*camWidth)));
 
 			//  image[(col*3) + row * camWidth + 0] = *(y + 2*(col + (row*camWidth*3 + 0)));
             //  image[(col*3) + row * camWidth + 1] = *(y + 2*(col + (row*camWidth*3 + 1)));
