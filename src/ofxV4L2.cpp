@@ -87,7 +87,7 @@ void ofxV4L2::initGrabber(char * devname, int iomethod, int cw, int ch)
 	// set resolution used for capture
 	camWidth = cw;
 	camHeight = ch;
-	image = new unsigned char[camWidth * camHeight];
+	image = new unsigned char[camWidth * camHeight * 3];
 	dev_name = devname;
 
 	// check if framerate was set externally
