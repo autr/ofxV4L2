@@ -133,6 +133,7 @@ void ofxV4L2::process_image(void * p, int length)
 
             image[(col*1) + row * camWidth + 0] = my;
             //fprintf(stdout, "TEST%u\n", my);
+            image[(col*1) + (row + camheight) * camWidth + 0] = 255-my;
             //image[(col*3) + row * camWidth + 1] = y;
             //image[(col*3) + row * camWidth + 2] = y;
             
