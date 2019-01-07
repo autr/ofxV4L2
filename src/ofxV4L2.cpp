@@ -132,7 +132,7 @@ void ofxV4L2::process_image(void * p, int length)
             //  image[(col*3) + row * camWidth + 2] = *(y + 2*(col + (row*camWidth*3 + 2)));
 
             image[(col*1) + row * camWidth + 0] = my;
-            cout << my << endl;
+            cout << my << std:endl;
             //image[(col*3) + row * camWidth + 1] = y;
             //image[(col*3) + row * camWidth + 2] = y;
             
