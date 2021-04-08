@@ -87,6 +87,9 @@ void ofxV4L2::initGrabber(char * devname, int iomethod, int cw, int ch)
 	// set resolution used for capture
 	camWidth = cw;
 	camHeight = ch;
+
+    tex.allocate(cw,ch,GL_RGB);
+
 	image = new unsigned char[camWidth * camHeight];
 	dev_name = devname;
 
@@ -121,24 +124,8 @@ int ofxV4L2::xioctl (int fd, int request, void * arg)
 
 void ofxV4L2::process_image(void * p, int length)
 {
-	int row, col;
-	unsigned char * y = (unsigned char*)p;
-	for (row=0; row<camHeight; row++){
-		for (col=0; col<camWidth; col++){
-            auto my = *(y + 2*(col + (row*camWidth)));
-
-			//  image[(col*3) + row * camWidth + 0] = *(y + 2*(col + (row*camWidth*3 + 0)));
-            //  image[(col*3) + row * camWidth + 1] = *(y + 2*(col + (row*camWidth*3 + 1)));
-            //  image[(col*3) + row * camWidth + 2] = *(y + 2*(col + (row*camWidth*3 + 2)));
-
-            image[(col*1) + row * camWidth + 0] = my;
-            //fprintf(stdout, "TEST%u\n", my);
-            image[(col*1) + (row + camHeight) * camWidth + 0] = 255-my;
-            //image[(col*3) + row * camWidth + 1] = y;
-            //image[(col*3) + row * camWidth + 2] = y;
-            
-		}
-	}
+    auto pix = (unsigned char*)p;
+    tex.loadData( pix, camWidth, camHeight, GL_RGB );
 }
 
 void ofxV4L2::grabFrame(void)
@@ -176,7 +163,6 @@ void ofxV4L2::grabFrame(void)
 		fprintf (stderr, "select timeout\n");
 		exit (EXIT_FAILURE);
 	}
-
     switch (io)
     {
         case IO_METHOD_READ:
@@ -219,7 +205,6 @@ void ofxV4L2::grabFrame(void)
             }
 
             assert (buf.index < n_buffers);
-
             process_image(buffers[buf.index].start, buffers[0].length);
             newframe = true;
 
@@ -540,6 +525,14 @@ void ofxV4L2::init_device(void)
 		fprintf(stdout, "Framerate for device %s could not be set. Framerate is now: %d fps\n", dev_name, streamparm.parm.capture.timeperframe.denominator);
 	else
 		fprintf(stdout, "Framerate for device %s could not read.", dev_name);
+
+
+    v4l2_std_id std_id = V4L2_STD_NTSC;
+    if (-1 == xioctl(fd,VIDIOC_S_STD, &std_id))
+    {
+        fprintf(stdout, "Blargh.");
+
+    }
 
 //    tpf->numerator = ap->time_base.num;
 //    tpf->denominator = ap->time_base.den;

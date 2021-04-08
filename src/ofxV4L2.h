@@ -60,6 +60,7 @@
 #include <asm/types.h>          /* for videodev2.h */
 
 #include <linux/videodev2.h>
+#include "ofTexture.h"
 
 #define CLEAR(x) memset (&(x), 0, sizeof (x))
 
@@ -137,7 +138,7 @@ class ofxV4L2
         void init_userp (unsigned int buffer_size);
         void init_mmap (void);
         void init_read(unsigned int buffer_size);
-
+        ofTexture tex;
 		// destructor
         ~ofxV4L2();
 
